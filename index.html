@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlexBlog - Modern Blog Platformu</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --bg-light: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: white !important;
+        }
+
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: white !important;
+            transform: translateY(-2px);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: white;
+            padding: 8rem 0 2rem 0;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .currency-ticker {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 3px solid var(--secondary-color);
+            border-bottom: 3px solid var(--secondary-color);
+            padding: 1rem 0;
+            margin: 2rem 0;
+            overflow: hidden;
+            white-space: nowrap;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .ticker-content {
+            display: inline-block;
+            animation: scroll-left 60s linear infinite;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .ticker-item {
+            display: inline-block;
+            margin: 0 3rem;
+            color: var(--primary-color);
+        }
+
+        .ticker-symbol {
+            color: var(--secondary-color);
+            font-weight: 700;
+            margin-right: 0.5rem;
+        }
+
+        .ticker-price {
+            color: var(--text-dark);
+            margin: 0 0.5rem;
+        }
+
+        .ticker-change {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .ticker-change.positive {
+            color: #27ae60;
+        }
+
+        .ticker-change.negative {
+            color: #e74c3c;
+        }
+
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        .blog-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+        .blog-card:hover .blog-image {
+            transform: scale(1.05);
+        }
+
+        .blog-content {
+            padding: 2rem;
+        }
+
+        .blog-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .blog-meta {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .blog-excerpt {
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .read-more-btn {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .read-more-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            color: white;
+        }
+
+        .sidebar-widget {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .widget-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--secondary-color);
+        }
+
+        .tag-cloud .tag {
+            display: inline-block;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            padding: 0.5rem 1rem;
+            margin: 0.3rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .tag-cloud .tag:hover {
+            background: var(--secondary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            background: var(--primary-color);
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 4rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .currency-widget {
+                padding: 1.5rem;
+            }
+            
+            .blog-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-blog"></i> TechBlog</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home"><i class="fas fa-home"></i> Ana Sayfa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#blog"><i class="fas fa-newspaper"></i> Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact"><i class="fas fa-envelope"></i> İletişim</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">FlexBlog</h1>
+            <p class="hero-subtitle">Türkiye'nin En Yeni Blog Yazılımı</p>
+            <p class="hero-subtitle">Teknoloji, finans ve güncel konularda en son haberleri takip edin</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container my-5" id="blog">
+        <div class="row">
+            <!-- Blog Posts -->
+            <h2 class="mb-4"><i class="fas fa-newspaper"></i> Son Yazılar</h2>
+            <div class="col-lg-8">
+                
+                <div class="blog-card">
+                    <img src="https://images.unsplash.com/photo-1518186233392-c232efbf2373?w=800&h=400&fit=crop" alt="Yapay Zeka" class="blog-image">
+                    <div class="blog-content">
+                        <h3 class="blog-title">Yapay Zeka ve Geleceğin Teknolojileri</h3>
+                        <div class="blog-meta">
+                            <i class="fas fa-calendar"></i> 25 Mayıs 2025 | 
+                            <i class="fas fa-user"></i> Admin | 
+                            <i class="fas fa-tag"></i> Teknoloji
+                        </div>
+                        <p class="blog-excerpt">
+                            Yapay zeka teknolojileri hızla gelişmeye devam ediyor. ChatGPT, Claude ve diğer AI sistemlerin 
+                            günlük hayatımıza etkilerini inceliyoruz. Bu yazıda AI'nin gelecekteki potansiyelini ve 
+                            karşılaşabileceğimiz fırsatları ele alıyoruz...
+                        </p>
+                        <a href="#" class="read-more-btn">Devamını Oku <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="blog-card">
+                    <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&h=400&fit=crop" alt="Kripto Para" class="blog-image">
+                    <div class="blog-content">
+                        <h3 class="blog-title">Kripto Para Piyasasında Son Gelişmeler</h3>
+                        <div class="blog-meta">
+                            <i class="fas fa-calendar"></i> 24 Mayıs 2025 | 
+                            <i class="fas fa-user"></i> Finans Editörü | 
+                            <i class="fas fa-tag"></i> Finans
+                        </div>
+                        <p class="blog-excerpt">
+                            Bitcoin ve Ethereum başta olmak üzere kripto para piyasasındaki son hareketleri analiz ediyoruz. 
+                            Piyasa trendleri, yeni düzenlemeler ve yatırım stratejileri hakkında detaylı bilgiler...
+                        </p>
+                        <a href="#" class="read-more-btn">Devamını Oku <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="blog-card">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop" alt="Web Development" class="blog-image">
+                    <div class="blog-content">
+                        <h3 class="blog-title">Modern Web Geliştirme Trendleri 2025</h3>
+                        <div class="blog-meta">
+                            <i class="fas fa-calendar"></i> 23 Mayıs 2025 | 
+                            <i class="fas fa-user"></i> Geliştirici | 
+                            <i class="fas fa-tag"></i> Web Development
+                        </div>
+                        <p class="blog-excerpt">
+                            2025 yılında web geliştirme dünyasında öne çıkan teknolojiler ve yaklaşımlar. React, Vue.js, 
+                            Next.js gibi frameworklerin son sürümleri ve performans optimizasyonu teknikleri...
+                        </p>
+                        <a href="#" class="read-more-btn">Devamını Oku <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="blog-card">
+                    <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=400&fit=crop" alt="Mobil Uygulama" class="blog-image">
+                    <div class="blog-content">
+                        <h3 class="blog-title">Mobil Uygulama Geliştirme İpuçları</h3>
+                        <div class="blog-meta">
+                            <i class="fas fa-calendar"></i> 22 Mayıs 2025 | 
+                            <i class="fas fa-user"></i> Mobil Developer | 
+                            <i class="fas fa-tag"></i> Mobil
+                        </div>
+                        <p class="blog-excerpt">
+                            iOS ve Android platformları için uygulama geliştirirken dikkat edilmesi gereken önemli noktalar. 
+                            Flutter, React Native ve native geliştirme karşılaştırması...
+                        </p>
+                        <a href="#" class="read-more-btn">Devamını Oku <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Search Widget -->
+                <div class="sidebar-widget">
+                    <h4 class="widget-title"><i class="fas fa-search"></i> Arama</h4>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Ara...">
+                        <button class="btn btn-outline-secondary" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Categories Widget -->
+                <div class="sidebar-widget">
+                    <h4 class="widget-title"><i class="fas fa-folder"></i> Kategoriler</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="d-flex justify-content-between text-decoration-none text-dark">
+                            Teknoloji 
+                        </a></li>
+                        <li><a href="#" class="d-flex justify-content-between text-decoration-none text-dark">
+                            Finans 
+                        </a></li>
+                        <li><a href="#" class="d-flex justify-content-between text-decoration-none text-dark">
+                            Web Development 
+                        </a></li>
+                        <li><a href="#" class="d-flex justify-content-between text-decoration-none text-dark">
+                            Mobil 
+                        </a></li>
+                        <li><a href="#" class="d-flex justify-content-between text-decoration-none text-dark">
+                            AI/ML 
+                        </a></li>
+                    </ul>
+                </div>
+
+                <!-- Tags Widget -->
+                <div class="sidebar-widget">
+                    <h4 class="widget-title"><i class="fas fa-tags"></i> Etiketler</h4>
+                    <div class="tag-cloud">
+                        <a href="#" class="tag">JavaScript</a>
+                        <a href="#" class="tag">React</a>
+                        <a href="#" class="tag">Python</a>
+                        <a href="#" class="tag">AI</a>
+                        <a href="#" class="tag">Blockchain</a>
+                        <a href="#" class="tag">CSS</a>
+                        <a href="#" class="tag">Node.js</a>
+                        <a href="#" class="tag">Flutter</a>
+                        <a href="#" class="tag">Vue.js</a>
+                        <a href="#" class="tag">Docker</a>
+                    </div>
+                </div>
+
+                <!-- Popular Posts Widget -->
+                <div class="sidebar-widget">
+                    <h4 class="widget-title"><i class="fas fa-fire"></i> Popüler Yazılar</h4>
+                    <div class="popular-posts">
+                        <div class="d-flex mb-3">
+                            <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=100&h=70&fit=crop" 
+                                 alt="Popular 1" class="rounded me-3" style="width: 70px; height: 50px; object-fit: cover;">
+                            <div>
+                                <h6 class="mb-1"><a href="#" class="text-decoration-none text-dark">React 18 Yenilikleri</a></h6>
+                                <small class="text-muted">2 gün önce</small>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-3">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=100&h=70&fit=crop" 
+                                 alt="Popular 2" class="rounded me-3" style="width: 70px; height: 50px; object-fit: cover;">
+                            <div>
+                                <h6 class="mb-1"><a href="#" class="text-decoration-none text-dark">Python ile Veri Analizi</a></h6>
+                                <small class="text-muted">3 gün önce</small>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=100&h=70&fit=crop" 
+                                 alt="Popular 3" class="rounded me-3" style="width: 70px; height: 50px; object-fit: cover;">
+                            <div>
+                                <h6 class="mb-1"><a href="#" class="text-decoration-none text-dark">CSS Grid Layout</a></h6>
+                                <small class="text-muted">5 gün önce</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5><i class="fas fa-blog"></i> TechBlog</h5>
+                    <p>Modern teknoloji ve finans dünyasının en güncel haberlerini takip edin. Yapay zeka, web geliştirme ve daha fazlası...</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 mb-4">
+                    <h6>Hızlı Linkler</h6>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="#">Ana Sayfa</a></li>
+                        <li><a href="#">Hakkımızda</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">İletişim</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 mb-4">
+                    <h6>Kategoriler</h6>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="#">Teknoloji</a></li>
+                        <li><a href="#">Finans</a></li>
+                        <li><a href="#">Web Development</a></li>
+                        <li><a href="#">Yapay Zeka</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 mb-4">
+                    <h6>İletişim</h6>
+                    <p><i class="fas fa-envelope"></i> info@techblog.com</p>
+                    <p><i class="fas fa-phone"></i> +90 (212) 123 45 67</p>
+                    <p><i class="fas fa-map-marker-alt"></i> İstanbul, Türkiye</p>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p>&copy; 2025 TechBlog. Tüm hakları saklıdır.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offsetTop = target.offsetTop - 80;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Currency data (simulated API response)
+        const currencyData = {
+            USD: { name: 'Amerikan Doları', symbol: '$', rate: 32.15, change: '+0.12' },
+            EUR: { name: 'Euro', symbol: '€', rate: 34.85, change: '-0.08' },
+            GBP: { name: 'İngiliz Sterlini', symbol: '£', rate: 40.22, change: '+0.25' },
+            JPY: { name: 'Japon Yeni', symbol: '¥', rate: 0.21, change: '+0.003' },
+            CHF: { name: 'İsviçre Frangı', symbol: 'CHF', rate: 35.78, change: '-0.15' },
+            CAD: { name: 'Kanada Doları', symbol: 'C$', rate: 23.65, change: '+0.18' }
+        };
+
+        // Load currency rates
+        function loadCurrencyRates() {
+            const container = document.getElementById('currency-rates');
+            
+            // Show loading
+            setTimeout(() => {
+                let html = '';
+                
+                Object.entries(currencyData).forEach(([code, data]) => {
+                    const changeClass = data.change.startsWith('+') ? 'text-success' : 'text-danger';
+                    const changeIcon = data.change.startsWith('+') ? 'fa-arrow-up' : 'fa-arrow-down';
+                    
+                    html += `
+                        <div class="currency-item">
+                            <div>
+                                <span class="currency-name">${data.symbol} ${data.name}</span>
+                                <small class="text-muted d-block">${code}/TRY</small>
+                            </div>
+                            <div class="text-end">
+                                <div class="currency-value">₺${data.rate.toFixed(2)}</div>
+                                <small class="${changeClass}">
+                                    <i class="fas ${changeIcon}"></i> ${data.change}
+                                </small>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                container.innerHTML = html;
+            }, 1500);
+        }
+
+        // Auto-refresh currency rates every 30 seconds
+        function refreshCurrencyRates() {
+            // Simulate rate changes
+            Object.keys(currencyData).forEach(code => {
+                const change = (Math.random() - 0.5) * 0.5;
+                currencyData[code].rate += change;
+                currencyData[code].change = change >= 0 ? `+${change.toFixed(3)}` : change.toFixed(3);
+            });
+            
+            loadCurrencyRates();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCurrencyRates();
+            
+            // Refresh currency rates every 30 seconds
+            setInterval(refreshCurrencyRates, 30000);
+        });
+
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'linear-gradient(135deg, rgba(44, 62, 80, 0.95), rgba(52, 152, 219, 0.95))';
+                navbar.style.backdropFilter = 'blur(10px)';
+            } else {
+                navbar.style.background = 'linear-gradient(135deg, var(--primary-color), var(--secondary-color))';
+                navbar.style.backdropFilter = 'none';
+            }
+        });
+
+        // Blog card animations
+        function animateOnScroll() {
+            const cards = document.querySelectorAll('.blog-card, .sidebar-widget');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'fadeInUp 0.6s ease forwards';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            cards.forEach(card => {
+                observer.observe(card);
+            });
+        }
+
+        // Initialize animations
+        animateOnScroll();
+
+        // Search functionality
+        document.querySelector('.input-group button').addEventListener('click', function() {
+            const searchTerm = document.querySelector('.input-group input').value;
+            if (searchTerm.trim()) {
+                alert(`"${searchTerm}" için arama yapılıyor... (Demo amaçlı)`);
+            }
+        });
+
+        // Enter key for search
+        document.querySelector('.input-group input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.querySelector('.input-group button').click();
+            }
+        });
+    </script>
+</body>
+</html>
